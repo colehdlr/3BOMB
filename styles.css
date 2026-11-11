@@ -1,0 +1,9 @@
+body {
+  background-color: black;
+}
+
+#game {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: white;
+}
