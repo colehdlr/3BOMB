@@ -39,8 +39,8 @@ function init() {
 function run() {
   const cellBuff = [];
 
-  for (let y = 0; y < cells.y; y++) {
-    for (let x = 0; x < cells.x; x++) {
+  for (let y = Math.floor(player.y - cells.y/2); y < Math.floor(player.y + cells.y/2); y++) {
+    for (let x = Math.floor(player.x - cells.x/2); x < Math.floor(player.x + cells.x/2); x++) {
       if (x == player.x && y == player.y) {
         cellBuff.push('i');
       }
