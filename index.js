@@ -48,7 +48,7 @@ function run() {
         cellBuff.push('.');
       }
       else {
-        cellBuff.push('-');
+        cellBuff.push('\u00A0');
       }
     }
   }
