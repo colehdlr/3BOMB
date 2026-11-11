@@ -1,9 +1,18 @@
+:root {
+  --cell-height: 20px;
+}
+
 body {
   background-color: black;
+  margin: 0;
 }
 
 #game {
   font-family: 'Courier New', monospace;
   font-weight: bold;
+  font-size: var(--cell-height);
+  line-height: var(--cell-height);
   color: white;
+  margin: 0;
+  word-wrap: break-word;
 }
