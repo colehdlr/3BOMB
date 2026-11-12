@@ -3,7 +3,7 @@
 }
 
 body {
-  background-color: black;
+  background-color: darkgreen;
   margin: 0;
 }
 
@@ -18,5 +18,9 @@ body {
 }
 
 .world {
-  color: grey;
+  color: green;
+}
+
+.wall {
+  color: pink;
 }

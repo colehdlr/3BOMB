@@ -3,8 +3,8 @@ const cellDimensions = {
   y: 20,
 }
 const worldDimensions = {
-  x: 40,
-  y: 20,
+  x: 80,
+  y: 40,
 }
 const MOVEMENT_DELTA = 50;
 
@@ -75,17 +75,20 @@ function init() {
 
   for (let x = 0; x < worldDimensions.x; x++) {
     for (let y = 0; y < worldDimensions.y; y++) {
-      world[x][y] = '.';
-
-      let random = Math.floor(Math.random() * 10);
-      if (random == 0) {
-        world[x][y] = '~';
+      if (x % 5 == 0 && y % 5 == 0) {
+        world[x][y] = '■';
       }
-      else if (random <= 2) {
-        world[x][y] = '^';
-      }
-      else if (random <= 9) {
-        world[x][y] = '\u00A0';
+      else {
+        let random = Math.floor(Math.random() * 20);
+        if (random == 0) {
+          world[x][y] = '~';
+        }
+        else if (random <= 2) {
+          world[x][y] = '^';
+        }
+        else if (random <= 19) {
+          world[x][y] = '\u00A0';
+        }
       }
     }
   }
@@ -126,7 +129,16 @@ function draw() {
         cellBuff.push('@');
       }
       else if (world[x] && world[x][y]) {
-        cellBuff.push(`<span class='world'>${world[x][y]}</span>`);
+        switch (world[x][y]) {
+          case '■':
+            cellBuff.push(`<span class='wall'>${world[x][y]}</span>`);
+            break;
+          case ' ':
+            cellBuff.push(world[x][y]);
+            break;
+          default:
+            cellBuff.push(`<span class='world'>${world[x][y]}</span>`);
+        }
       }
       else {
         cellBuff.push('\u00A0');
