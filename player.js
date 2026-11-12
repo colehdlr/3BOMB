@@ -1,5 +1,3 @@
-const BOMB_REGEN = 5;
-
 class Player {
   constructor(spawn) {
     this.x = spawn.x;
@@ -10,18 +8,18 @@ class Player {
   update(keys, worldGrid, bombs) {
     // Movement
     if (keys.up || keys.down) {
-      if (keys.up && this.y > 0 && worldGrid[this.x][this.y - 1] != '■') {
+      if (keys.up && this.y > 0 && worldGrid[this.x][this.y - 1] != chars.WALL) {
         this.y--;
       }
-      if (keys.down && worldGrid[this.x][this.y + 1] && worldGrid[this.x][this.y + 1] != '■') {
+      if (keys.down && worldGrid[this.x][this.y + 1] && worldGrid[this.x][this.y + 1] != chars.WALL) {
         this.y++;
       }
     }
     else {
-      if (keys.left && this.x > 0 && worldGrid[this.x - 1][this.y] != '■') {
+      if (keys.left && this.x > 0 && worldGrid[this.x - 1][this.y] != chars.WALL) {
         this.x--;
       }
-      if (keys.right && worldGrid[this.x + 1] && worldGrid[this.x + 1][this.y] != '■') {
+      if (keys.right && worldGrid[this.x + 1] && worldGrid[this.x + 1][this.y] != chars.WALL) {
         this.x++;
       }
     }
@@ -37,6 +35,6 @@ class Player {
 
   
   draw(screenBuff, xMin, yMin, screenWidth) {
-    screenBuff[(this.y - yMin) * screenWidth + (this.x - xMin)] = `@`;
+    screenBuff[(this.y - yMin) * screenWidth + (this.x - xMin)] = chars.PLAYER;
   }
 }

@@ -8,22 +8,22 @@ class World {
         if (x % WALL_GAP == 0 && y % WALL_GAP == 0) {
           let random = Math.floor(Math.random() * 6);
           if (random == 0) {
-            this.grid[x][y] = '\u00A0';
+            this.grid[x][y] = chars.BLANK;
           }
           else {
-            this.grid[x][y] = '■';
+            this.grid[x][y] = chars.WALL;
           }
         }
         else {
           let random = Math.floor(Math.random() * 20);
           if (random == 0) {
-            this.grid[x][y] = '~';
+            this.grid[x][y] = chars.GRASS_1;
           }
           else if (random <= 2) {
-            this.grid[x][y] = '^';
+            this.grid[x][y] = chars.GRASS_2;
           }
           else {
-            this.grid[x][y] = '\u00A0';
+            this.grid[x][y] = chars.BLANK;
           }
         }
       }
@@ -36,10 +36,10 @@ class World {
         if (this.withinBounds(x, y, xMin, xMax, yMin, yMax)) {
           const screenBuffLoc = (y - yMin) * screenWidth + (x - xMin);
           switch (this.grid[x][y]) {
-            case '■':
+            case chars.WALL:
               screenBuff[screenBuffLoc] = `<span class='wall'>${this.grid[x][y]}</span>`;
               break;
-            case '\u00A0':
+            case chars.BLANK:
               screenBuff[screenBuffLoc] = this.grid[x][y];
               break;
             default:

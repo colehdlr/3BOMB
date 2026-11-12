@@ -5,7 +5,7 @@ class Bomb {
   }
 
   draw(screenBuff, xMin, yMin, screenWidth) {
-    screenBuff[(this.y - yMin) * screenWidth + (this.x - xMin)] = `<span class='bomb'>o</span>`;
+    screenBuff[(this.y - yMin) * screenWidth + (this.x - xMin)] = `<span class='bomb'>${chars.BOMB}</span>`;
   }
 
   withinBounds(xMin, xMax, yMin, yMax) {

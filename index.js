@@ -1,6 +1,16 @@
+const chars = {
+  GRASS_1: '~',
+  GRASS_2: '^',
+  BLANK: '\u00A0',
+  PLAYER: '@',
+  WALL: '■',
+  BOMB: 'O',
+}
+
 const CELL_SIZE = 20;
 const TICK_DURATION = 30;
 const WALL_GAP = 5;
+const BOMB_REGEN = 5;
 
 let canvas;
 let world;
@@ -92,7 +102,7 @@ function draw() {
   const yMin = Math.floor(player.y - screenDimensions.y/2);
   const yMax = Math.floor(player.y + screenDimensions.y/2);
 
-  const screenBuff = new Array(screenDimensions.x * screenDimensions.y).fill('\u00A0');
+  const screenBuff = new Array(screenDimensions.x * screenDimensions.y).fill(chars.BLANK);
 
   world.draw(screenBuff, xMin, xMax, yMin, yMax, screenDimensions.x);
   bombs.forEach((bomb) => {
