@@ -1,5 +1,5 @@
 :root {
-  --cell-height: 20px;
+  --cell-size: 20px;
 }
 
 body {
@@ -10,8 +10,8 @@ body {
 #game {
   font-family: 'Courier New', monospace;
   font-weight: bold;
-  font-size: var(--cell-height);
-  line-height: var(--cell-height);
+  font-size: var(--cell-size);
+  line-height: var(--cell-size);
   color: white;
   margin: 0;
   word-wrap: break-word;

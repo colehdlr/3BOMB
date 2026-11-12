@@ -2,6 +2,7 @@ const cellDimensions = {
   x: 20,
   y: 20,
 }
+const CELL_SIZE = 20;
 const worldDimensions = {
   x: 81,
   y: 41,
@@ -28,8 +29,8 @@ const keys = {
 }
 
 function updateCells() {
-  cells.x = Math.floor(document.body.clientWidth/cellDimensions.x);
-  cells.y = Math.floor(window.innerHeight/cellDimensions.y);
+  cells.x = Math.floor(document.body.clientWidth/CELL_SIZE);
+  cells.y = Math.floor(window.innerHeight/CELL_SIZE);
 }
 
 window.onload = init;
