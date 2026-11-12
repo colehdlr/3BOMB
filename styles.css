@@ -26,3 +26,7 @@ body {
 .wall {
   color: pink;
 }
+
+.bomb {
+  color: red;
+}

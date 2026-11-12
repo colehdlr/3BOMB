@@ -1,37 +1,31 @@
-const worldDimensions = {
-  x: 81,
-  y: 41,
-}
 const CELL_SIZE = 20;
 const TICK_DURATION = 30;
+const WALL_GAP = 5;
 
 let canvas;
-let world = new Array(worldDimensions.x).fill(0).map(() => new Array(worldDimensions.y).fill(0));
+let world;
+let player;
 let bombs = [];
 let lastTick = 0;
+let screenDimensions;
 
-const cells = {
-  x: undefined,
-  y: undefined,
-};
-const player = {
-  x: 39,
-  y: 20,
-};
 const keys = {
   up: false,
   down: false,
   left: false,
   right: false,
+  space: false,
 }
 
-function updateCells() {
-  cells.x = Math.floor(document.body.clientWidth/CELL_SIZE);
-  cells.y = Math.floor(window.innerHeight/CELL_SIZE);
+function updateScreenDimensions() {
+  screenDimensions = {
+    x: Math.floor(document.body.clientWidth/CELL_SIZE),
+    y: Math.floor(window.innerHeight/CELL_SIZE),
+  }
 }
 
+window.addEventListener("resize", updateScreenDimensions);
 window.onload = init;
-window.addEventListener("resize", updateCells);
 
 window.onkeydown = function(e) {
   switch (e.key) {  
@@ -51,8 +45,8 @@ window.onkeydown = function(e) {
     case 'd':
       keys.right = true;
       break;
-    case 'SpaceBar':
-      console.log('space');
+    case ' ':
+      keys.space = true;
       break;
   }
 };
@@ -80,85 +74,35 @@ window.onkeyup = function(e) {
 
 
 function init() {
-  for (let x = 0; x < worldDimensions.x; x++) {
-    for (let y = 0; y < worldDimensions.y; y++) {
-      if (x % 5 == 0 && y % 5 == 0) {
-        let random = Math.floor(Math.random() * 6);
-        if (random == 0) {
-          world[x][y] = '\u00A0';
-        }
-        else {
-          world[x][y] = '■';
-        }
-      }
-      else {
-        let random = Math.floor(Math.random() * 20);
-        if (random == 0) {
-          world[x][y] = '~';
-        }
-        else if (random <= 2) {
-          world[x][y] = '^';
-        }
-        else {
-          world[x][y] = '\u00A0';
-        }
-      }
-    }
-  }
-
-  updateCells();
+  updateScreenDimensions();
   canvas = document.getElementById("game");
+  player = new Player({x: 39, y: 20});
+  world = new World({x: 81, y: 41});
 
   window.requestAnimationFrame(run);
 }
 
-function update(timestamp) {
-  if (keys.up || keys.down) {
-    if (keys.up && player.y > 0 && world[player.x][player.y - 1] != '■') {
-      player.y--;
-    }
-    if (keys.down && player.y < worldDimensions.y - 1 && world[player.x][player.y + 1] != '■') {
-      player.y++;
-    }
-  }
-  else {
-    if (keys.left && player.x > 0 && world[player.x - 1][player.y] != '■') {
-      player.x--;
-      lastMovement = timestamp;
-    }
-    if (keys.right && player.x < worldDimensions.x - 1 && world[player.x + 1][player.y] != '■') {
-      player.x++;
-    }
-  }
+function update() {
+  player.update(keys, world.grid, bombs);
 }
 
 function draw() {
-  const cellBuff = [];
+  const xMin = Math.floor(player.x - screenDimensions.x/2);
+  const xMax = Math.floor(player.x + screenDimensions.x/2);
+  const yMin = Math.floor(player.y - screenDimensions.y/2);
+  const yMax = Math.floor(player.y + screenDimensions.y/2);
 
-  for (let y = Math.floor(player.y - cells.y/2); y < Math.floor(player.y + cells.y/2); y++) {
-    for (let x = Math.floor(player.x - cells.x/2); x < Math.floor(player.x + cells.x/2); x++) {
-      if (x == player.x && y == player.y) {
-        cellBuff.push('@');
-      }
-      else if (world[x] && world[x][y]) {
-        switch (world[x][y]) {
-          case '■':
-            cellBuff.push(`<span class='wall'>${world[x][y]}</span>`);
-            break;
-          case ' ':
-            cellBuff.push(world[x][y]);
-            break;
-          default:
-            cellBuff.push(`<span class='world'>${world[x][y]}</span>`);
-        }
-      }
-      else {
-        cellBuff.push('\u00A0');
-      }
+  const screenBuff = new Array(screenDimensions.x * screenDimensions.y).fill('\u00A0');
+
+  world.draw(screenBuff, xMin, xMax, yMin, yMax, screenDimensions.x);
+  bombs.forEach((bomb) => {
+    if (bomb.withinBounds(xMin, xMax, yMin, yMax)) {
+      bomb.draw(screenBuff, xMin, yMin, screenDimensions.x);
     }
-  }
-
-  canvas.innerHTML = cellBuff.join('');
+  });
+  player.draw(screenBuff, xMin, yMin, screenDimensions.x);
+  
+  canvas.innerHTML = screenBuff.join('');
 }
 
 function run(timestamp) {
