@@ -109,7 +109,7 @@ function draw() {
         cellBuff.push('@');
       }
       else if (world[x] && world[x][y]) {
-        cellBuff.push('.');
+        cellBuff.push('<span class=\'world\'>.</span>');
       }
       else {
         cellBuff.push('\u00A0');
@@ -117,7 +117,7 @@ function draw() {
     }
   }
 
-  canvas.textContent = cellBuff.join('');
+  canvas.innerHTML = cellBuff.join('');
 }
 
 function run(timestamp) {

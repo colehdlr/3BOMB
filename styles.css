@@ -16,3 +16,7 @@ body {
   margin: 0;
   word-wrap: break-word;
 }
+
+.world {
+  color: grey;
+}
