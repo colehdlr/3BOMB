@@ -1,5 +1,5 @@
 const cellDimensions = {
-  x: 12,
+  x: 20,
   y: 20,
 }
 const worldDimensions = {
@@ -17,8 +17,8 @@ const cells = {
   y: undefined,
 };
 const player = {
-  x: 20,
-  y: 10,
+  x: 40,
+  y: 20,
 };
 const keys = {
   up: false,
@@ -36,37 +36,37 @@ window.onload = init;
 window.addEventListener("resize", updateCells);
 
 window.onkeydown = function(e) {
-    switch (e.key) {  
-      case 'w':
-        keys.up = true;
-        break;
-      case 's': 
-        keys.down = true;
-        break;
-      case 'a':
-        keys.left = true;
-        break;
-      case 'd': 
-        keys.right = true;
-        break;
-    }
+  switch (e.key) {  
+    case 'w':
+      keys.up = true;
+      break;
+    case 's': 
+      keys.down = true;
+      break;
+    case 'a':
+      keys.left = true;
+      break;
+    case 'd':
+      keys.right = true;
+      break;
+  }
 };
 
 window.onkeyup = function(e) {
-    switch (e.key) {  
-      case 'w':
-        keys.up = false;
-        break;
-      case 's': 
-        keys.down = false;
-        break;
-      case 'a':
-        keys.left = false;
-        break;
-      case 'd': 
-        keys.right = false;
-        break;
-    }
+  switch (e.key) {
+    case 'w':
+      keys.up = false;
+      break;
+    case 's':
+      keys.down = false;
+      break;
+    case 'a':
+      keys.left = false;
+      break;
+    case 'd':
+      keys.right = false;
+      break;
+  }
 };
 
 
@@ -76,7 +76,13 @@ function init() {
   for (let x = 0; x < worldDimensions.x; x++) {
     for (let y = 0; y < worldDimensions.y; y++) {
       if (x % 5 == 0 && y % 5 == 0) {
-        world[x][y] = '■';
+        let random = Math.floor(Math.random() * 6);
+        if (random == 0) {
+          world[x][y] = '\u00A0';
+        }
+        else {
+          world[x][y] = '■';
+        }
       }
       else {
         let random = Math.floor(Math.random() * 20);
@@ -86,7 +92,7 @@ function init() {
         else if (random <= 2) {
           world[x][y] = '^';
         }
-        else if (random <= 19) {
+        else {
           world[x][y] = '\u00A0';
         }
       }
@@ -101,21 +107,25 @@ function init() {
 
 function update(timestamp) {
   if (timestamp - lastMovement > MOVEMENT_DELTA) {
-    if (keys.up && player.y > 0) {
-      player.y--;
-      lastMovement = timestamp;
+    if (keys.up || keys.down) {
+      if (keys.up && player.y > 0 && world[player.x][player.y - 1] != '■') {
+        player.y--;
+        lastMovement = timestamp;
+      }
+      if (keys.down && player.y < worldDimensions.y - 1 && world[player.x][player.y + 1] != '■') {
+        player.y++;
+        lastMovement = timestamp;
+      }
     }
-    if (keys.down && player.y < worldDimensions.y - 1) {
-      player.y++;
-      lastMovement = timestamp;
-    }
-    if (keys.left && player.x > 0) {
-      player.x--;
-      lastMovement = timestamp;
-    }
-    if (keys.right && player.x < worldDimensions.x - 1) {
-      player.x++;
-      lastMovement = timestamp;
+    else {
+      if (keys.left && player.x > 0 && world[player.x - 1][player.y] != '■') {
+        player.x--;
+        lastMovement = timestamp;
+      }
+      if (keys.right && player.x < worldDimensions.x - 1 && world[player.x + 1][player.y] != '■') {
+        player.x++;
+        lastMovement = timestamp;
+      }
     }
   }
 }

@@ -15,6 +15,7 @@ body {
   color: white;
   margin: 0;
   word-wrap: break-word;
+  letter-spacing: 8px;
 }
 
 .world {
