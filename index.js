@@ -71,7 +71,24 @@ window.onkeyup = function(e) {
 
 
 function init() {
-  world = new Array(worldDimensions.x).fill(0).map(() => new Array(worldDimensions.y).fill('.'));
+  world = new Array(worldDimensions.x).fill(0).map(() => new Array(worldDimensions.y).fill(0));
+
+  for (let x = 0; x < worldDimensions.x; x++) {
+    for (let y = 0; y < worldDimensions.y; y++) {
+      world[x][y] = '.';
+
+      let random = Math.floor(Math.random() * 10);
+      if (random == 0) {
+        world[x][y] = '~';
+      }
+      else if (random <= 2) {
+        world[x][y] = '^';
+      }
+      else if (random <= 9) {
+        world[x][y] = '\u00A0';
+      }
+    }
+  }
 
   updateCells();
   canvas = document.getElementById("game");
@@ -109,7 +126,7 @@ function draw() {
         cellBuff.push('@');
       }
       else if (world[x] && world[x][y]) {
-        cellBuff.push('<span class=\'world\'>.</span>');
+        cellBuff.push(`<span class='world'>${world[x][y]}</span>`);
       }
       else {
         cellBuff.push('\u00A0');
