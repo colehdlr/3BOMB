@@ -3,14 +3,14 @@ const cellDimensions = {
   y: 20,
 }
 const worldDimensions = {
-  x: 80,
-  y: 40,
+  x: 81,
+  y: 41,
 }
-const MOVEMENT_DELTA = 50;
+const TICK_LENGTH = 30;
 
 let canvas;
 let world;
-let lastMovement = 0;
+let lastTick = 0;
 
 const cells = {
   x: undefined,
@@ -106,26 +106,21 @@ function init() {
 }
 
 function update(timestamp) {
-  if (timestamp - lastMovement > MOVEMENT_DELTA) {
-    if (keys.up || keys.down) {
-      if (keys.up && player.y > 0 && world[player.x][player.y - 1] != '■') {
-        player.y--;
-        lastMovement = timestamp;
-      }
-      if (keys.down && player.y < worldDimensions.y - 1 && world[player.x][player.y + 1] != '■') {
-        player.y++;
-        lastMovement = timestamp;
-      }
+  if (keys.up || keys.down) {
+    if (keys.up && player.y > 0 && world[player.x][player.y - 1] != '■') {
+      player.y--;
     }
-    else {
-      if (keys.left && player.x > 0 && world[player.x - 1][player.y] != '■') {
-        player.x--;
-        lastMovement = timestamp;
-      }
-      if (keys.right && player.x < worldDimensions.x - 1 && world[player.x + 1][player.y] != '■') {
-        player.x++;
-        lastMovement = timestamp;
-      }
+    if (keys.down && player.y < worldDimensions.y - 1 && world[player.x][player.y + 1] != '■') {
+      player.y++;
+    }
+  }
+  else {
+    if (keys.left && player.x > 0 && world[player.x - 1][player.y] != '■') {
+      player.x--;
+      lastMovement = timestamp;
+    }
+    if (keys.right && player.x < worldDimensions.x - 1 && world[player.x + 1][player.y] != '■') {
+      player.x++;
     }
   }
 }
@@ -160,9 +155,11 @@ function draw() {
 }
 
 function run(timestamp) {
-  update(timestamp);
-
-  draw();
-
+  if (timestamp - lastTick > TICK_LENGTH) {
+    update();
+    draw();
+    
+    lastTick = timestamp;
+  }
   window.requestAnimationFrame(run);
 }
