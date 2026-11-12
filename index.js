@@ -6,7 +6,8 @@ const CELL_SIZE = 20;
 const TICK_DURATION = 30;
 
 let canvas;
-let world;
+let world = new Array(worldDimensions.x).fill(0).map(() => new Array(worldDimensions.y).fill(0));
+let bombs = [];
 let lastTick = 0;
 
 const cells = {
@@ -14,7 +15,7 @@ const cells = {
   y: undefined,
 };
 const player = {
-  x: 40,
+  x: 39,
   y: 20,
 };
 const keys = {
@@ -34,32 +35,43 @@ window.addEventListener("resize", updateCells);
 
 window.onkeydown = function(e) {
   switch (e.key) {  
+    case 'ArrowUp':
     case 'w':
       keys.up = true;
       break;
+    case 'ArrowDown':
     case 's': 
       keys.down = true;
       break;
+    case 'ArrowLeft':
     case 'a':
       keys.left = true;
       break;
+    case 'ArrowRight':
     case 'd':
       keys.right = true;
+      break;
+    case 'SpaceBar':
+      console.log('space');
       break;
   }
 };
 
 window.onkeyup = function(e) {
   switch (e.key) {
+    case 'ArrowUp':
     case 'w':
       keys.up = false;
       break;
+    case 'ArrowDown':
     case 's':
       keys.down = false;
       break;
+    case 'ArrowLeft':
     case 'a':
       keys.left = false;
       break;
+    case 'ArrowRight':
     case 'd':
       keys.right = false;
       break;
@@ -68,8 +80,6 @@ window.onkeyup = function(e) {
 
 
 function init() {
-  world = new Array(worldDimensions.x).fill(0).map(() => new Array(worldDimensions.y).fill(0));
-
   for (let x = 0; x < worldDimensions.x; x++) {
     for (let y = 0; y < worldDimensions.y; y++) {
       if (x % 5 == 0 && y % 5 == 0) {

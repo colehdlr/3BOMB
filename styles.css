@@ -5,6 +5,7 @@
 body {
   background-color: darkgreen;
   margin: 0;
+  overflow: hidden;
 }
 
 #game {
