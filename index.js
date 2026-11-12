@@ -1,13 +1,9 @@
-const cellDimensions = {
-  x: 20,
-  y: 20,
-}
-const CELL_SIZE = 20;
 const worldDimensions = {
   x: 81,
   y: 41,
 }
-const TICK_LENGTH = 30;
+const CELL_SIZE = 20;
+const TICK_DURATION = 30;
 
 let canvas;
 let world;
@@ -156,7 +152,7 @@ function draw() {
 }
 
 function run(timestamp) {
-  if (timestamp - lastTick > TICK_LENGTH) {
+  if (timestamp - lastTick > TICK_DURATION) {
     update();
     draw();
     
