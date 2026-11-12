@@ -81,19 +81,19 @@ function init() {
 
 function update(timestamp) {
   if (timestamp - lastMovement > MOVEMENT_DELTA) {
-    if (keys.up) {
-      player.y++;
-      lastMovement = timestamp;
-    }
-    if (keys.down) {
+    if (keys.up && player.y > 0) {
       player.y--;
       lastMovement = timestamp;
     }
-    if (keys.left) {
+    if (keys.down && player.y < worldDimensions.y - 1) {
+      player.y++;
+      lastMovement = timestamp;
+    }
+    if (keys.left && player.x > 0) {
       player.x--;
       lastMovement = timestamp;
     }
-    if (keys.right) {
+    if (keys.right && player.x < worldDimensions.x - 1) {
       player.x++;
       lastMovement = timestamp;
     }
@@ -103,7 +103,7 @@ function update(timestamp) {
 function draw() {
   const cellBuff = [];
 
-  for (let y = Math.floor(player.y + cells.y/2); y > Math.floor(player.y - cells.y/2); y--) {
+  for (let y = Math.floor(player.y - cells.y/2); y < Math.floor(player.y + cells.y/2); y++) {
     for (let x = Math.floor(player.x - cells.x/2); x < Math.floor(player.x + cells.x/2); x++) {
       if (x == player.x && y == player.y) {
         cellBuff.push('@');
