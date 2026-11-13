@@ -29,7 +29,7 @@ class Player {
     if (keys.space && this.ticksTillBomb == 0) {
       bombs.push(new Bomb({x: this.x, y: this.y}));
       keys.space = false;
-      this.ticksTillBomb = BOMB_REGEN;
+      this.ticksTillBomb = BOMB_RELOAD_TICKS;
     }
   }
 

@@ -31,26 +31,20 @@ class World {
   }
 
   draw(screenBuff, xMin, xMax, yMin, yMax, screenWidth) {
-    for (let x = 0; x < this.dimensions.x; x++) {
-      for (let y = 0; y < this.dimensions.y; y++) {
-        if (this.withinBounds(x, y, xMin, xMax, yMin, yMax)) {
-          const screenBuffLoc = (y - yMin) * screenWidth + (x - xMin);
-          switch (this.grid[x][y]) {
-            case chars.WALL:
-              screenBuff[screenBuffLoc] = `<span class='wall'>${this.grid[x][y]}</span>`;
-              break;
-            case chars.BLANK:
-              screenBuff[screenBuffLoc] = this.grid[x][y];
-              break;
-            default:
-              screenBuff[screenBuffLoc] = `<span class='world'>${this.grid[x][y]}</span>`;
-          }
+    for (let x = Math.max(0, xMin); x < Math.min(this.dimensions.x, xMax); x++) {
+      for (let y = Math.max(0, yMin); y < Math.min(this.dimensions.y, yMax); y++) {
+        const screenBuffPos = (y - yMin) * screenWidth + (x - xMin);
+        switch (this.grid[x][y]) {
+          case chars.WALL:
+            screenBuff[screenBuffPos] = `<span class='wall'>${this.grid[x][y]}</span>`;
+            break;
+          case chars.BLANK:
+            screenBuff[screenBuffPos] = this.grid[x][y];
+            break;
+          default:
+            screenBuff[screenBuffPos] = `<span class='world'>${this.grid[x][y]}</span>`;
         }
       }
     }
-  }
-
-  withinBounds(x, y, xMin, xMax, yMin, yMax) {
-    return xMin <= x && x < xMax && yMin <= y && y < yMax;
   }
 }

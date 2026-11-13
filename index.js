@@ -4,13 +4,14 @@ const chars = {
   BLANK: '\u00A0',
   PLAYER: '@',
   WALL: '■',
-  BOMB: 'O',
+  BOMB_1: 'O',
+  BOMB_2: 'o',
 }
 
-const CELL_SIZE = 20;
-const TICK_DURATION = 40;
+const CELL_PIXELS = 20;
+const TICK_MS = 50;
 const WALL_GAP = 5;
-const BOMB_REGEN = 5;
+const BOMB_RELOAD_TICKS = 5;
 
 let canvas;
 let world;
@@ -29,8 +30,8 @@ const keys = {
 
 function updateScreenDimensions() {
   screenDimensions = {
-    x: Math.floor(document.body.clientWidth/CELL_SIZE),
-    y: Math.floor(window.innerHeight/CELL_SIZE),
+    x: Math.floor(document.body.clientWidth/CELL_PIXELS),
+    y: Math.floor(window.innerHeight/CELL_PIXELS),
   }
 }
 
@@ -86,10 +87,10 @@ window.onkeyup = function(e) {
 function init() {
   updateScreenDimensions();
   canvas = document.getElementById("game");
-  player = new Player({x: 39, y: 20});
+  player = new Player({x: 42, y: 20});
   world = new World({x: 81, y: 41});
 
-  window.requestAnimationFrame(run);
+  window.requestAnimationFrame(game);
 }
 
 function update() {
@@ -101,9 +102,9 @@ function update() {
 
 function draw() {
   const xMin = Math.floor(player.x - screenDimensions.x/2);
-  const xMax = Math.floor(player.x + screenDimensions.x/2);
+  const xMax = xMin + screenDimensions.x;
   const yMin = Math.floor(player.y - screenDimensions.y/2);
-  const yMax = Math.floor(player.y + screenDimensions.y/2);
+  const yMax = yMin + screenDimensions.y;
 
   const screenBuff = new Array(screenDimensions.x * screenDimensions.y).fill(chars.BLANK);
 
@@ -118,12 +119,12 @@ function draw() {
   canvas.innerHTML = screenBuff.join('');
 }
 
-function run(timestamp) {
-  if (timestamp - lastTick > TICK_DURATION) {
+function game(timestamp) {
+  if (timestamp - lastTick > TICK_MS) {
     update();
     draw();
     
     lastTick = timestamp;
   }
-  window.requestAnimationFrame(run);
+  window.requestAnimationFrame(game);
 }

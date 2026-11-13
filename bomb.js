@@ -2,7 +2,7 @@ class Bomb {
   constructor(spawn) {
     this.x = spawn.x;
     this.y = spawn.y;
-    this.ticksTillBoom = 10;
+    this.ticksTillBoom = 30;
   }
 
   update() {
@@ -10,11 +10,12 @@ class Bomb {
   }
 
   draw(screenBuff, xMin, yMin, screenWidth) {
-    if (this.ticksTillBoom % 2 == 0) {
-      screenBuff[(this.y - yMin) * screenWidth + (this.x - xMin)] = `<span class='bomb-1'>${chars.BOMB}</span>`;
+    const screenBuffPos = (this.y - yMin) * screenWidth + (this.x - xMin);
+    if (this.ticksTillBoom % 3 != 0) {
+      screenBuff[screenBuffPos] = `<span class='bomb-1'>${chars.BOMB_1}</span>`;
     }
     else {
-      screenBuff[(this.y - yMin) * screenWidth + (this.x - xMin)] = `<span class='bomb-2'>${chars.BOMB}</span>`;
+      screenBuff[screenBuffPos] = `<span class='bomb-2'>${chars.BOMB_2}</span>`;
     }
   }
 
