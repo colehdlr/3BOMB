@@ -8,7 +8,7 @@ const chars = {
 }
 
 const CELL_SIZE = 20;
-const TICK_DURATION = 30;
+const TICK_DURATION = 40;
 const WALL_GAP = 5;
 const BOMB_REGEN = 5;
 
@@ -94,6 +94,9 @@ function init() {
 
 function update() {
   player.update(keys, world.grid, bombs);
+  bombs.forEach((bomb) => {
+    bomb.update();
+  });
 }
 
 function draw() {

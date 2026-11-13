@@ -27,6 +27,10 @@ body {
   color: pink;
 }
 
-.bomb {
+.bomb-1 {
   color: red;
+}
+
+.bomb-2 {
+  color: darkred;
 }

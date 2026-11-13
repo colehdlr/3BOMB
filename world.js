@@ -5,9 +5,9 @@ class World {
 
     for (let x = 0; x < this.dimensions.x; x++) {
       for (let y = 0; y < this.dimensions.y; y++) {
-        if (x % WALL_GAP == 0 && y % WALL_GAP == 0) {
+        if ((x % WALL_GAP == 0 || (x + 1) % WALL_GAP == 0) && (y % WALL_GAP == 0 || (y + 1) % WALL_GAP == 0)) {
           let random = Math.floor(Math.random() * 6);
-          if (random == 0) {
+          if (random <= 3) {
             this.grid[x][y] = chars.BLANK;
           }
           else {
