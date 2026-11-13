@@ -6,11 +6,19 @@ const chars = {
   WALL: '■',
   BOMB_1: 'O',
   BOMB_2: 'o',
+  EXPLOSION: '#',
 }
 
-const CELL_PIXELS = 20;
+const Direction = {
+  UP: 0,
+  DOWN: 1,
+  LEFT: 2,
+  RIGHT: 3,
+}
+
+const CELL_PIXELS = 12;
 const TICK_MS = 50;
-const WALL_GAP = 5;
+const WALL_GAP = 6;
 const BOMB_RELOAD_TICKS = 5;
 
 let canvas;
@@ -20,14 +28,6 @@ let bombs = [];
 let lastTick = 0;
 let screenDimensions;
 
-const keys = {
-  up: false,
-  down: false,
-  left: false,
-  right: false,
-  space: false,
-}
-
 function updateScreenDimensions() {
   screenDimensions = {
     x: Math.floor(document.body.clientWidth/CELL_PIXELS),
@@ -35,29 +35,26 @@ function updateScreenDimensions() {
   }
 }
 
-window.addEventListener("resize", updateScreenDimensions);
-window.onload = init;
-
 window.onkeydown = function(e) {
   switch (e.key) {  
     case 'ArrowUp':
     case 'w':
-      keys.up = true;
+      player.direction.add(Direction.UP);
       break;
     case 'ArrowDown':
     case 's': 
-      keys.down = true;
+      player.direction.add(Direction.DOWN);
       break;
     case 'ArrowLeft':
     case 'a':
-      keys.left = true;
+      player.direction.add(Direction.LEFT);
       break;
     case 'ArrowRight':
     case 'd':
-      keys.right = true;
+      player.direction.add(Direction.RIGHT);
       break;
     case ' ':
-      keys.space = true;
+      player.dropBomb = true;
       break;
   }
 };
@@ -66,37 +63,39 @@ window.onkeyup = function(e) {
   switch (e.key) {
     case 'ArrowUp':
     case 'w':
-      keys.up = false;
+      player.direction.delete(Direction.UP);
       break;
     case 'ArrowDown':
     case 's':
-      keys.down = false;
+      player.direction.delete(Direction.DOWN);
       break;
     case 'ArrowLeft':
     case 'a':
-      keys.left = false;
+      player.direction.delete(Direction.LEFT);
       break;
     case 'ArrowRight':
     case 'd':
-      keys.right = false;
+      player.direction.delete(Direction.RIGHT);
       break;
   }
 };
 
+window.addEventListener("resize", updateScreenDimensions);
+window.onload = init;
 
 function init() {
   updateScreenDimensions();
   canvas = document.getElementById("game");
-  player = new Player({x: 42, y: 20});
-  world = new World({x: 81, y: 41});
+  player = new Player({x: 43, y: 25});
+  world = new World({x: 87, y: 51});
 
   window.requestAnimationFrame(game);
 }
 
 function update() {
-  player.update(keys, world.grid, bombs);
-  bombs.forEach((bomb) => {
-    bomb.update();
+  player.update(world.grid, bombs);
+  bombs.forEach((bomb, i) => {
+    if (bomb.update(world.grid)) bombs.splice(i, 1);
   });
 }
 
@@ -110,9 +109,7 @@ function draw() {
 
   world.draw(screenBuff, xMin, xMax, yMin, yMax, screenDimensions.x);
   bombs.forEach((bomb) => {
-    if (bomb.withinBounds(xMin, xMax, yMin, yMax)) {
-      bomb.draw(screenBuff, xMin, yMin, screenDimensions.x);
-    }
+    bomb.draw(screenBuff, xMin, xMax, yMin, yMax, screenDimensions.x);
   });
   player.draw(screenBuff, xMin, yMin, screenDimensions.x);
   

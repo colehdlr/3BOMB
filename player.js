@@ -3,32 +3,79 @@ class Player {
     this.x = spawn.x;
     this.y = spawn.y;
     this.ticksTillBomb = 0;
+    this.direction = new Set();
+    this.dropBomb = false;
   }
 
-  update(keys, worldGrid, bombs) {
+  update(worldGrid, bombs) {
     // Movement
-    if (keys.up || keys.down) {
-      if (keys.up && this.y > 0 && worldGrid[this.x][this.y - 1] != chars.WALL) {
-        this.y--;
-      }
-      if (keys.down && worldGrid[this.x][this.y + 1] && worldGrid[this.x][this.y + 1] != chars.WALL) {
-        this.y++;
+    let direction = Array.from(this.direction).pop();
+    if (direction == Direction.UP && worldGrid[this.x][this.y - 2] && worldGrid[this.x][this.y - 2] != chars.WALL) {
+      switch (this.x % 6) {
+        case 0:
+          this.x++;
+          this.y--;
+          break;
+        case 1:
+          this.y--;
+          break;
+        case 2:
+          this.x--;
+          this.y--;
+          break;
       }
     }
-    else {
-      if (keys.left && this.x > 0 && worldGrid[this.x - 1][this.y] != chars.WALL) {
-        this.x--;
+    if (direction == Direction.DOWN && worldGrid[this.x][this.y + 2] && worldGrid[this.x][this.y + 2] != chars.WALL) {
+      switch (this.x % 6) {
+        case 0:
+          this.x++;
+          this.y++;
+          break;
+        case 1:
+          this.y++;
+          break;
+        case 2:
+          this.x--;
+          this.y++;
+          break;
       }
-      if (keys.right && worldGrid[this.x + 1] && worldGrid[this.x + 1][this.y] != chars.WALL) {
-        this.x++;
+    }
+    if (direction == Direction.LEFT && worldGrid[this.x - 2] && worldGrid[this.x - 2][this.y] != chars.WALL) {
+      switch (this.y % 6) {
+        case 0:
+          this.x--;
+          this.y++;
+          break;
+        case 1:
+          this.x--;
+          break;
+        case 2:
+          this.x--;
+          this.y--;
+          break;
+      }
+    }
+    if (direction == Direction.RIGHT && worldGrid[this.x + 2] && worldGrid[this.x + 2][this.y] != chars.WALL) {
+      switch (this.y % 6) {
+        case 0:
+          this.x++;
+          this.y++;
+          break;
+        case 1:
+          this.x++;
+          break;
+        case 2:
+          this.x++;
+          this.y--;
+          break;
       }
     }
 
     // Bomb
     if (this.ticksTillBomb > 0) this.ticksTillBomb--;
-    if (keys.space && this.ticksTillBomb == 0) {
+    if (this.dropBomb && this.ticksTillBomb == 0) {
       bombs.push(new Bomb({x: this.x, y: this.y}));
-      keys.space = false;
+      this.dropBomb = false;
       this.ticksTillBomb = BOMB_RELOAD_TICKS;
     }
   }

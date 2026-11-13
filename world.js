@@ -5,16 +5,18 @@ class World {
 
     for (let x = 0; x < this.dimensions.x; x++) {
       for (let y = 0; y < this.dimensions.y; y++) {
-        if ((x % WALL_GAP == 0 || (x + 1) % WALL_GAP == 0) && (y % WALL_GAP == 0 || (y + 1) % WALL_GAP == 0)) {
-          let random = Math.floor(Math.random() * 6);
-          if (random <= 3) {
-            this.grid[x][y] = chars.BLANK;
-          }
-          else {
-            this.grid[x][y] = chars.WALL;
-          }
+        if (x % WALL_GAP == 4 && y % WALL_GAP == 4) {
+          this.grid[x][y] = chars.WALL;
+          this.grid[x+1][y] = chars.WALL;
+          this.grid[x][y+1] = chars.WALL;
+          this.grid[x+1][y+1] = chars.WALL;
+          this.grid[x-1][y+1] = chars.WALL;
+          this.grid[x-1][y] = chars.WALL;
+          this.grid[x][y-1] = chars.WALL;
+          this.grid[x-1][y-1] = chars.WALL;
+          this.grid[x+1][y-1] = chars.WALL;
         }
-        else {
+        else if (this.grid[x][y] != chars.WALL) {
           let random = Math.floor(Math.random() * 20);
           if (random == 0) {
             this.grid[x][y] = chars.GRASS_1;

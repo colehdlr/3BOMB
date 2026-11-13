@@ -1,5 +1,5 @@
 :root {
-  --cell-size: 20px;
+  --cell-pixels: 20px;
 }
 
 body {
@@ -11,12 +11,12 @@ body {
 #game {
   font-family: 'Courier New', monospace;
   font-weight: bold;
-  font-size: var(--cell-size);
-  line-height: var(--cell-size);
+  font-size: var(--cell-pixels);
+  line-height: var(--cell-pixels);
   color: white;
   margin: 0;
   word-wrap: break-word;
-  letter-spacing: 8px;
+  line-height: 12px;
 }
 
 .world {
@@ -33,4 +33,8 @@ body {
 
 .bomb-2 {
   color: darkred;
+}
+
+.explosion {
+  color: orange;
 }
