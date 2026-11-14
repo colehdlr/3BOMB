@@ -3,9 +3,11 @@ const chars = {
   GRASS_2: '^',
   BLANK: '\u00A0',
   PLAYER: '@',
-  WALL: '■',
-  BOMB_1: 'O',
-  BOMB_2: 'o',
+  WALL: '▣',
+  BOMB_1: '◐',
+  BOMB_2: '◓',
+  BOMB_3: '◑',
+  BOMB_4: '◒',
   EXPLOSION: '#',
 }
 

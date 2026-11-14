@@ -24,15 +24,11 @@ body {
 }
 
 .wall {
-  color: pink;
+  color: darkgrey;
 }
 
-.bomb-1 {
-  color: red;
-}
-
-.bomb-2 {
-  color: darkred;
+.bomb {
+  color: cyan;
 }
 
 .explosion {

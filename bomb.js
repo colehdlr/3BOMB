@@ -68,11 +68,23 @@ class Bomb {
         if (withinBounds(cell.x, cell.y, xMin, xMax, yMin, yMax)) screenBuff[(cell.y - yMin) * screenWidth + (cell.x - xMin)] = `<span class='explosion'>${chars.EXPLOSION}</span>`;
       });
     }
-    else if (this.ticksTillBoom % 3 != 0) {
-      if (withinBounds(this.x, this.y, xMin, xMax, yMin, yMax)) screenBuff[screenBuffPosition] = `<span class='bomb-1'>${chars.BOMB_1}</span>`;
-    }
     else {
-      if (withinBounds(this.x, this.y, xMin, xMax, yMin, yMax)) screenBuff[screenBuffPosition] = `<span class='bomb-2'>${chars.BOMB_2}</span>`;
+      let bombChar;
+
+      if (this.ticksTillBoom % 8 <= 1) {
+        bombChar = chars.BOMB_1;
+      }
+      else if (this.ticksTillBoom % 8 <= 3) {
+        bombChar = chars.BOMB_2;
+      }
+      else if (this.ticksTillBoom % 8 <= 5) {
+        bombChar = chars.BOMB_3;
+      }
+      else {
+        bombChar = chars.BOMB_4;
+      }
+
+      if (withinBounds(this.x, this.y, xMin, xMax, yMin, yMax)) screenBuff[screenBuffPosition] = `<span class='bomb'>${bombChar}</span>`;
     }
   }
 }
